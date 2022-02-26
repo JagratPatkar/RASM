@@ -7,10 +7,10 @@ def error(): print("Invalid Instruction")
 
 def splitBinary(imm):
     ls =  [i for i in str(imm) if i != "b"]
+    ls.reverse()     
     return ls
 
 def getSecs(ls,s,e):
-    ls.reverse()     
     return "".join(ls[s:e+1])[::-1]
 
 def regToaddr(inst,str):
@@ -70,7 +70,7 @@ def uType(inst,lst):
 def jType(inst,lst):
     bin_inst = spec[inst]["op"]
     bin_inst = regToaddr(inst,lst[0]) + bin_inst
-    imm_full = getSecs(immExp(inst,lst[1]))
+    imm_full = splitBinary(immExp(inst,lst[1]))
     bin_inst = getSecs(imm_full,12,19) + bin_inst
     bin_inst = getSecs(imm_full,11,11) + bin_inst
     bin_inst = getSecs(imm_full,0,10) + bin_inst
@@ -88,8 +88,8 @@ def convertInst(inst,lst):
     else: error()
 
 def convertAssembly():
-    w = open(sys.argv[1],"w")
-    for i in open("one.S","r").readlines():
+    w = open("output.txt","w")
+    for i in open(sys.argv[1],"r").readlines():
         inst = i.strip("\n").split(" ",1)
         if len(inst) > 1 and '' not in inst:
             inst[1] = inst[1].strip(" ").split(",")
