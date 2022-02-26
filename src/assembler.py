@@ -3,8 +3,6 @@ import json
 spec = json.load(open("spec.json","r"))
 
 
-
-
 def splitBinary(imm,s,e):
     ls =  [i for i in str(imm) if i != "b"]
     ls.reverse()     
@@ -64,12 +62,24 @@ def uType(inst,lst):
     return bin_inst
 
 
+def jType(inst,lst):
+    bin_inst = spec[inst]["op"]
+    bin_inst = regToaddr(inst,lst[0]) + bin_inst
+    imm_full = immExp(inst,lst[1])
+    bin_inst = splitBinary(imm_full,12,19) + bin_inst
+    bin_inst = splitBinary(imm_full,11,11) + bin_inst
+    bin_inst = splitBinary(imm_full,0,10) + bin_inst
+    bin_inst = splitBinary(imm_full,20,20) + bin_inst
+    return bin_inst
+
+
 def convertInst(inst,lst):
     if spec[inst]["type"] == "i" : return iType(inst,lst)
     elif spec[inst]["type"] == "r" : return rType(inst,lst)
     elif spec[inst]["type"] == "s" : return sType(inst,lst)
     elif spec[inst]["type"] == "b" : return bType(inst,lst)
     elif spec[inst]["type"] == "u" : return uType(inst,lst)
+    elif spec[inst]["type"] == "j" : return jType(inst,lst)
     else: print("Invalid Instruction")
 
 def convertAssembly():
