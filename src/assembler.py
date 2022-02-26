@@ -1,16 +1,21 @@
 import json
-
+import sys
 spec = json.load(open("spec.json","r"))
 
 
-def splitBinary(imm,s,e):
+def error(): print("Invalid Instruction")
+
+def splitBinary(imm):
     ls =  [i for i in str(imm) if i != "b"]
+    return ls
+
+def getSecs(ls,s,e):
     ls.reverse()     
     return "".join(ls[s:e+1])[::-1]
 
 def regToaddr(inst,str):
     x_len = spec[spec[inst]["type"]]["x"]
-    return format(int(str.strip(" ").strip("x")),x_len) 
+    return format(int(str.strip(" ").strip("x").strip("r")),x_len) 
 
 def immExp(inst,str):
     imm_len =  spec[spec[inst]["type"]]["imm"]
@@ -35,24 +40,24 @@ def rType(inst,lst):
 
 def sType(inst,lst):
     bin_inst = spec[spec[inst]["type"]]["op"]
-    imm_full = immExp(inst,lst[2]) 
-    bin_inst = splitBinary(imm_full,0,4) + bin_inst
+    imm_full = splitBinary(immExp(inst,lst[2]))
+    bin_inst = getSecs(imm_full,0,4) + bin_inst
     bin_inst = spec[inst]["func"] + bin_inst
     bin_inst = regToaddr(inst,lst[0]) + bin_inst
     bin_inst = regToaddr(inst,lst[1]) + bin_inst
-    bin_inst = splitBinary(imm_full,5,11) + bin_inst
+    bin_inst = getSecs(imm_full,5,11) + bin_inst
     return bin_inst
 
 def bType(inst,lst):
     bin_inst = spec[spec[inst]["type"]]["op"]
-    imm_full = immExp(inst,lst[2])
-    bin_inst = splitBinary(imm_full,11,11) + bin_inst
-    bin_inst = splitBinary(imm_full,1,4) + bin_inst
+    imm_full = splitBinary(immExp(inst,lst[2]))
+    bin_inst = getSecs(imm_full,11,11) + bin_inst
+    bin_inst = getSecs(imm_full,1,4) + bin_inst
     bin_inst = spec[inst]["func"] + bin_inst
     bin_inst = regToaddr(inst,lst[0]) + bin_inst
     bin_inst = regToaddr(inst,lst[1]) + bin_inst
-    bin_inst = splitBinary(imm_full,5,10) + bin_inst
-    bin_inst = splitBinary(imm_full,12,12) + bin_inst
+    bin_inst = getSecs(imm_full,5,10) + bin_inst
+    bin_inst = getSecs(imm_full,12,12) + bin_inst
     return bin_inst
 
 def uType(inst,lst):
@@ -65,11 +70,11 @@ def uType(inst,lst):
 def jType(inst,lst):
     bin_inst = spec[inst]["op"]
     bin_inst = regToaddr(inst,lst[0]) + bin_inst
-    imm_full = immExp(inst,lst[1])
-    bin_inst = splitBinary(imm_full,12,19) + bin_inst
-    bin_inst = splitBinary(imm_full,11,11) + bin_inst
-    bin_inst = splitBinary(imm_full,0,10) + bin_inst
-    bin_inst = splitBinary(imm_full,20,20) + bin_inst
+    imm_full = getSecs(immExp(inst,lst[1]))
+    bin_inst = getSecs(imm_full,12,19) + bin_inst
+    bin_inst = getSecs(imm_full,11,11) + bin_inst
+    bin_inst = getSecs(imm_full,0,10) + bin_inst
+    bin_inst = getSecs(imm_full,20,20) + bin_inst
     return bin_inst
 
 
@@ -80,14 +85,16 @@ def convertInst(inst,lst):
     elif spec[inst]["type"] == "b" : return bType(inst,lst)
     elif spec[inst]["type"] == "u" : return uType(inst,lst)
     elif spec[inst]["type"] == "j" : return jType(inst,lst)
-    else: print("Invalid Instruction")
+    else: error()
 
 def convertAssembly():
-    w = open("output.txt","w")
+    w = open(sys.argv[1],"w")
     for i in open("one.S","r").readlines():
         inst = i.strip("\n").split(" ",1)
-        inst[1] = inst[1].strip(" ").split(",")
-        inst = convertInst(inst[0],inst[1])
-        w.write(inst + "\n")
+        if len(inst) > 1 and '' not in inst:
+            inst[1] = inst[1].strip(" ").split(",")
+            inst = convertInst(inst[0],inst[1])
+            w.write(inst + "\n")
+        else: error()
 
 convertAssembly()
