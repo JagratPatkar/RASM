@@ -34,7 +34,7 @@ def rType(inst,lst):
     return bin_inst
 
 def sType(inst,lst):
-    bin_inst = spec[inst]["op"]
+    bin_inst = spec[spec[inst]["type"]]["op"]
     imm_full = immExp(inst,lst[2]) 
     bin_inst = splitBinary(imm_full,0,4) + bin_inst
     bin_inst = spec[inst]["func"] + bin_inst
@@ -44,7 +44,7 @@ def sType(inst,lst):
     return bin_inst
 
 def bType(inst,lst):
-    bin_inst = spec[inst]["op"]
+    bin_inst = spec[spec[inst]["type"]]["op"]
     imm_full = immExp(inst,lst[2])
     bin_inst = splitBinary(imm_full,11,11) + bin_inst
     bin_inst = splitBinary(imm_full,1,4) + bin_inst
