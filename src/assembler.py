@@ -25,12 +25,12 @@ def iType(inst,lst):
     return bin_inst
 
 def rType(inst,lst):
-    bin_inst = spec[inst]["op"]
+    bin_inst = spec[spec[inst]["type"]]["op"]
     bin_inst = regToaddr(inst,lst[0]) + bin_inst
     bin_inst = spec[inst]["func"] + bin_inst
     bin_inst = regToaddr(inst,lst[1]) + bin_inst
     bin_inst = regToaddr(inst,lst[2]) + bin_inst
-    bin_inst = spec[inst]["func7"]
+    bin_inst = spec[inst]["func7"] + bin_inst
     return bin_inst
 
 def sType(inst,lst):
@@ -86,7 +86,7 @@ def convertAssembly():
     w = open("output.txt","w")
     for i in open("one.S","r").readlines():
         inst = i.strip("\n").split(" ",1)
-        inst[1] = inst[1].split(",")
+        inst[1] = inst[1].strip(" ").split(",")
         inst = convertInst(inst[0],inst[1])
         w.write(inst + "\n")
 
