@@ -3,4 +3,4 @@ A RISC-V Assembler targeting the Base RV32I ISA
 
 ## Supported Instructions
 
-    R Type: ``ADD``
+R Type: ``ADD``
