@@ -1,4 +1,5 @@
 import json
+from pickletools import bytes4
 import sys
 spec = json.load(open("spec.json","r"))
 
@@ -88,13 +89,14 @@ def convertInst(inst,lst):
     else: error()
 
 def convertAssembly():
-    w = open("output.txt","w")
+    w = open("output.bin","wb")
     for i in open(sys.argv[1],"r").readlines():
         inst = i.strip("\n").split(" ",1)
         if len(inst) > 1 and '' not in inst:
             inst[1] = inst[1].strip(" ").split(",")
             inst = convertInst(inst[0],inst[1])
-            w.write(inst + "\n")
+            w.write(int(inst,2).to_bytes(4,'big'))
         else: error()
+    w.close()
 
 convertAssembly()
