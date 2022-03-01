@@ -6,77 +6,92 @@
     "ADDI" : { 
         "type" : "i",
         "op" : "0010011",
-        "func" : "000"
+        "func" : "000",
+        "func7" : false
     },
     "SLTI" : { 
         "type" : "i",
         "op" : "0010011",
-        "func" : "010"
+        "func" : "010",
+        "func7" : false
     },
     "SLTIU" : { 
         "type" : "i",
         "op" : "0010011",
-        "func" : "011"
+        "func" : "011",
+        "func7" : false
     },
     "XORI" : { 
         "type" : "i",
         "op" : "0010011",
-        "func" : "100"
+        "func" : "100",
+        "func7" : false
     },
     "ORI" : { 
         "type" : "i",
         "op" : "0010011",
-        "func" : "110"
+        "func" : "110",
+        "func7" : false
     },
     "ANDI" : { 
         "type" : "i",
         "op" : "0010011",
-        "func" : "111"
+        "func" : "111",
+        "func7" : false
     },
     "SLLI" : { 
         "type" : "i",
         "op" : "0010011",
-        "func" : "001"
+        "func" : "001",
+        "func7" : false
     },
     "SRLI" : { 
         "type" : "i",
         "op" : "0010011",
-        "func" : "101"
+        "func" : "101",
+        "func7" : false
     },
     "SRAI" : { 
         "type" : "i",
         "op" : "0010011",
-        "func" : "101"
+        "func" : "101",
+        "func7" : true
     },
     "JALR" : { 
         "type" : "i",
         "op" : "1100111",
-        "func" : "000"
+        "func" : "000",
+        "func7" : false
     },
     "LB" : { 
         "type" : "i",
         "op" : "0000011",
-        "func" : "000"
+        "func" : "000",
+        "func7" : false
     },
     "LH" : { 
         "type" : "i",
         "op" : "0000011",
-        "func" : "001"
+        "func" : "001",
+        "func7" : false
     },
     "LW" : { 
         "type" : "i",
         "op" : "0000011",
-        "func" : "010"
+        "func" : "010",
+        "func7" : false
     },
     "LBU" : { 
         "type" : "i",
         "op" : "0000011",
-        "func" : "100"
+        "func" : "100",
+        "func7" : false
     },
     "LHU" : { 
         "type" : "i",
         "op" : "0000011",
-        "func" : "101"
+        "func" : "101",
+        "func7" : false
     },
     "r" : {
         "x" : "05b",

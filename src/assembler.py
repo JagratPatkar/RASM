@@ -28,8 +28,10 @@ def iType(inst,lst):
     bin_inst = spec[inst]["op"]
     bin_inst = regToaddr(inst,lst[0]) + bin_inst
     bin_inst = spec[inst]["func"] + bin_inst
+    imm_full = splitBinary(immExp(inst,lst[2]))
+    if spec[inst]["func7"]: imm_full[10] = '1'
     bin_inst = regToaddr(inst,lst[1]) + bin_inst
-    bin_inst = immExp(inst,lst[2]) + bin_inst
+    bin_inst = getSecs(imm_full,0,11) + bin_inst
     return bin_inst
 
 def rType(inst,lst):
