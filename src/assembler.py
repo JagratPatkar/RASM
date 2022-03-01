@@ -20,6 +20,8 @@ def regToaddr(inst,str):
 
 def immExp(inst,str):
     imm_len =  spec[spec[inst]["type"]]["imm"]
+    if spec[inst]["type"] == "j":
+        return format(int(str.strip(" "),2),imm_len) + "0"
     return  format(int(str.strip(" "),2),imm_len) 
 
 def iType(inst,lst):
@@ -74,7 +76,7 @@ def jType(inst,lst):
     imm_full = splitBinary(immExp(inst,lst[1]))
     bin_inst = getSecs(imm_full,12,19) + bin_inst
     bin_inst = getSecs(imm_full,11,11) + bin_inst
-    bin_inst = getSecs(imm_full,0,10) + bin_inst
+    bin_inst = getSecs(imm_full,1,10) + bin_inst
     bin_inst = getSecs(imm_full,20,20) + bin_inst
     return bin_inst
 
